@@ -4,8 +4,8 @@ const getCroppendImageUrl = (url: string) => {
   if (!url) return noImagePlaceholder;
   return url;
 
-  if (!url) return noImagePlaceholder;
-  return url.replace("media/books", "media/crop/600/400/books");
+  // if (!url) return noImagePlaceholder;
+  // return url.replace("media/books", "media/crop/600/400/books");
 };
 
 export default getCroppendImageUrl;
