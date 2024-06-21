@@ -7,7 +7,7 @@ import NavBar from "./components/NavBar";
 import { AuthProvider } from "./context/AuthContext";
 import AuthorDetailPage from "./pages/AuthorDetailPage";
 
-const AppRouter = () => (
+const App = () => (
   <AuthProvider>
     <Router>
       <NavBar />
@@ -24,4 +24,4 @@ const AppRouter = () => (
   </AuthProvider>
 );
 
-export default AppRouter;
+export default App;
