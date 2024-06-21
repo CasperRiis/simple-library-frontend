@@ -2,9 +2,12 @@ import { Button, HStack, Image, Link, Spacer } from "@chakra-ui/react";
 import logo from "../assets/logo.webp";
 import SearchInput from "./SearchInput";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const { isAuthenticated, logout } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
@@ -26,7 +29,7 @@ const NavBar = () => {
         </Link>
       ) : null}
       {!isAuthenticated ? (
-        <Link href="/login">
+        <Link onClick={() => navigate("/login")}>
           <Button mr={4} variant="ghost">
             Login
           </Button>
