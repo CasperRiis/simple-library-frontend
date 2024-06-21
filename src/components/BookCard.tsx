@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Heading, Image } from "@chakra-ui/react";
+import { Card, CardBody, Heading, Image } from "@chakra-ui/react";
 import { Book } from "../entities/Book";
 import getCroppendImageUrl from "../services/image-crop";
 import { Link } from "react-router-dom";

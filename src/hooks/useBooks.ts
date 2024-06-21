@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
 import { Book } from "../entities/Book";
 import ApiClient, { FetchResponse } from "../services/api-client";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import useBookQueryStore from "../store";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import ms from "ms";
 
 const apiClient = new ApiClient<Book>("book");

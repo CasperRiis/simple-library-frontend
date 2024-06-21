@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import ApiClient from "../services/api-client";
 import { Author } from "../entities/Author";
-import ms from "ms";
 
 const apiClient = new ApiClient<Author>("author/");
 

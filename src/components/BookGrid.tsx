@@ -1,4 +1,4 @@
-import { Button, Flex, SimpleGrid, Spinner, Text } from "@chakra-ui/react";
+import { Button, SimpleGrid, Spinner } from "@chakra-ui/react";
 import useBooks from "../hooks/useBooks";
 import BookCard from "./BookCard";
 import BookCardContainer from "./BookCardContainer";

@@ -1,6 +1,4 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { Book } from "../entities/Book";
-import { Author } from "../entities/Author";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
