@@ -10,10 +10,12 @@ import {
 } from "@chakra-ui/react";
 import ApiClient from "../../services/api-client";
 import { Book } from "../../entities/Book";
+import useBooks from "../../hooks/useBooks";
 
 const apiClient = new ApiClient<Book>("book");
 
 const BookAddPage = () => {
+  const { refetch } = useBooks();
   const toast = useToast();
 
   const handleSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
@@ -35,6 +37,7 @@ const BookAddPage = () => {
     apiClient
       .post(book)
       .then(() => {
+        refetch();
         event.target.reset();
         toast({
           title: "Post success",

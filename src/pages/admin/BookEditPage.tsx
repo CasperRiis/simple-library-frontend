@@ -18,7 +18,7 @@ const apiClient = new ApiClient<Book>("book/");
 
 const BookEditPage = () => {
   const { id } = useParams();
-  const { data: book } = useBook(id!, true);
+  const { data: book, refetch } = useBook(id!, true);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -41,6 +41,7 @@ const BookEditPage = () => {
     apiClient
       .put(book)
       .then(() => {
+        refetch();
         navigate(`/book/${book.id}`);
       })
       .catch(() => {
@@ -58,6 +59,7 @@ const BookEditPage = () => {
     apiClient
       .delete(book!.id)
       .then(() => {
+        refetch();
         navigate("/");
       })
       .catch(() => {

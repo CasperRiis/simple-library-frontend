@@ -11,10 +11,13 @@ import {
 } from "@chakra-ui/react";
 import ApiClient from "../../services/api-client";
 import { Author } from "../../entities/Author";
+import AuthorGrid from "../../components/AuthorGrid";
+import useAuthors from "../../hooks/useAuthors";
 
 const apiClient = new ApiClient<Author>("author");
 
 const AuthorManagePage = () => {
+  const { refetch } = useAuthors();
   const toast = useToast();
 
   const handleSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
@@ -35,6 +38,7 @@ const AuthorManagePage = () => {
     apiClient
       .post(author)
       .then(() => {
+        refetch();
         event.target.reset();
         toast({
           title: "Post success",
@@ -84,6 +88,7 @@ const AuthorManagePage = () => {
         </Button>
       </Box>
       <Divider marginY={4} />
+      <AuthorGrid />
     </Box>
   );
 };

@@ -18,7 +18,7 @@ const apiClient = new ApiClient<Author>("author/");
 
 const AuthorEditPage = () => {
   const { id } = useParams();
-  const { data: author } = useAuthor(id!, true);
+  const { data: author, refetch } = useAuthor(id!, true);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -40,6 +40,7 @@ const AuthorEditPage = () => {
     apiClient
       .put(author)
       .then(() => {
+        refetch();
         navigate(`/author/${author.id}`);
       })
       .catch(() => {
@@ -57,7 +58,8 @@ const AuthorEditPage = () => {
     apiClient
       .delete(author!.id)
       .then(() => {
-        navigate("/");
+        refetch();
+        navigate("/author/manage");
       })
       .catch(() => {
         toast({
