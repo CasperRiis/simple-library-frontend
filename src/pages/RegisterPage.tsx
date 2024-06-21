@@ -12,8 +12,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-const LoginPage = () => {
-  const { login, isAuthenticated } = useAuth();
+const RegisterPage = () => {
+  const { login, register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -29,14 +29,14 @@ const LoginPage = () => {
       username: event.target.username.value,
       password: event.target.password.value,
     };
-    login(userCredentials)
+    register(userCredentials)
       .then(() => {
         navigate("/");
       })
       .catch(() => {
         toast({
-          title: "Login failed.",
-          description: "Invalid username or password.",
+          title: "Register failed.",
+          description: "Unexpected error. Please try again.",
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -48,7 +48,7 @@ const LoginPage = () => {
     <VStack spacing="4" align="center">
       <Box padding="8" width={{ base: "90%", md: "400px" }}>
         <Heading as="h2" size="xl" mb={6} textAlign="center">
-          Login
+          Register
         </Heading>
         <Box as="form" onSubmit={handleSubmit}>
           <FormControl>
@@ -60,15 +60,12 @@ const LoginPage = () => {
             <Input type="password" name="password" required />
           </FormControl>
           <Button type="submit" mt={4} width="full">
-            Login
+            Register
           </Button>
-          <Box textAlign="center" mt={4}>
-            <Link to="/register">Register here</Link>
-          </Box>
         </Box>
       </Box>
     </VStack>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

@@ -8,7 +8,8 @@ import React, {
   useState,
 } from "react";
 
-const apiClient = new ApiClient<UserCredentials>("account/login");
+const apiClientLogin = new ApiClient<UserCredentials>("account/login");
+const apiClientRegister = new ApiClient<UserCredentials>("account/register");
 const ROLE_CLAIM: string =
   "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
@@ -22,6 +23,7 @@ type AuthContextProps = {
   role: string;
   login: (userCredentials: UserCredentials) => Promise<void>;
   logout: () => void;
+  register: (userCredentials: UserCredentials) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextProps | undefined>(
@@ -59,8 +61,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, []);
 
-  const login = (userCredentials: UserCredentials) => {
-    return apiClient
+  const login = async (userCredentials: UserCredentials) => {
+    return apiClientLogin
       .post(userCredentials)
       .then((res) => {
         if (res) {
@@ -84,6 +86,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     localStorage.removeItem("token");
   };
 
+  const register = async (userCredentials: UserCredentials) => {
+    try {
+      const res = await apiClientRegister.post(userCredentials);
+      if (res) {
+        login(userCredentials);
+      } else {
+        throw new Error("Issue with registering.");
+      }
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -91,6 +106,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         role,
         login,
         logout,
+        register,
       }}
     >
       {children}

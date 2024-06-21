@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import NavBar from "./components/NavBar";
 import { AuthProvider } from "./context/AuthContext";
 import AuthorDetailPage from "./pages/AuthorDetailPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const App = () => (
   <AuthProvider>
@@ -19,6 +20,7 @@ const App = () => (
           element={<ProtectedRoute element={<AuthorDetailPage />} />}
         />
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
       </Routes>
     </Router>
   </AuthProvider>
