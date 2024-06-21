@@ -1,19 +1,27 @@
-import { createBrowserRouter } from "react-router-dom";
-import Layout from "./pages/Layout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import BookDetailPage from "./pages/BookDetailPage";
-import ErrorPage from "./pages/ErrorPage";
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import NavBar from "./components/NavBar";
+import { AuthProvider } from "./context/AuthContext";
+import AuthorDetailPage from "./pages/AuthorDetailPage";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <ErrorPage />,
-    children: [
-      { path: "/", element: <HomePage /> },
-      { path: "book/:id", element: <BookDetailPage /> },
-    ],
-  },
-]);
+const AppRouter = () => (
+  <AuthProvider>
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="book/:id" element={<BookDetailPage />} />
+        <Route
+          path="author/:id"
+          element={<ProtectedRoute element={<AuthorDetailPage />} />}
+        />
+        <Route path="login" element={<LoginPage />} />
+      </Routes>
+    </Router>
+  </AuthProvider>
+);
 
-export default router;
+export default AppRouter;
