@@ -9,11 +9,13 @@ import {
   FormLabel,
   Input,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 
 const LoginPage = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -27,9 +29,19 @@ const LoginPage = () => {
       username: event.target.username.value,
       password: event.target.password.value,
     };
-    login(userCredentials).then(() => {
-      navigate("/");
-    });
+    login(userCredentials)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        toast({
+          title: "Login failed.",
+          description: "Invalid username or password.",
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
 
   return (
@@ -43,7 +55,7 @@ const LoginPage = () => {
             <FormLabel>Username</FormLabel>
             <Input type="text" name="username" required />
           </FormControl>
-          <FormControl>
+          <FormControl paddingTop="4">
             <FormLabel>Password</FormLabel>
             <Input type="password" name="password" required />
           </FormControl>

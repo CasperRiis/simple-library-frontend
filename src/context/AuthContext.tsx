@@ -1,3 +1,5 @@
+import ApiClient from "../services/api-client";
+import { jwtDecode } from "jwt-decode";
 import React, {
   ReactNode,
   createContext,
@@ -6,62 +8,87 @@ import React, {
   useState,
 } from "react";
 
-type AuthContextType = {
-  isAuthenticated: boolean;
-  user: UserCredentials | null;
-  login: (userCredentials: UserCredentials) => Promise<void>;
-  logout: () => void;
-};
+const apiClient = new ApiClient<UserCredentials>("account/login");
+const ROLE_CLAIM: string =
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
 interface UserCredentials {
   username: string;
   password: string;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
+type AuthContextProps = {
+  isAuthenticated: boolean;
+  role: string;
+  login: (userCredentials: UserCredentials) => Promise<void>;
+  logout: () => void;
+};
+
+export const AuthContext = createContext<AuthContextProps | undefined>(
   undefined
 );
+
+interface DecodedToken {
+  exp: number;
+  role: string;
+  [key: string]: any;
+}
+
+const isTokenValid = (token: string): boolean => {
+  const decoded: DecodedToken = jwtDecode(token);
+  return decoded.exp * 1000 > Date.now();
+};
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<UserCredentials | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [role, setRole] = useState<string>("");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedAuth = localStorage.getItem("isAuthenticated");
+    const storedToken = localStorage.getItem("token");
 
-    if (storedUser && storedAuth) {
-      setIsAuthenticated(JSON.parse(storedAuth));
-      setUser(JSON.parse(storedUser));
+    if (storedToken && isTokenValid(storedToken)) {
+      const decoded: DecodedToken = jwtDecode(storedToken);
+      setIsAuthenticated(true);
+      setRole(decoded[ROLE_CLAIM]);
+    } else {
+      setIsAuthenticated(false);
+      setRole("");
+      localStorage.removeItem("token");
     }
   }, []);
 
   const login = (userCredentials: UserCredentials) => {
-    return new Promise<void>((resolve) => {
-      // authenticate user, usually with an API call
-      // if successful:
-      setIsAuthenticated(true);
-      setUser(userCredentials);
-      localStorage.setItem("isAuthenticated", "true");
-      localStorage.setItem("user", JSON.stringify(userCredentials));
-      resolve();
-    });
+    return apiClient
+      .post(userCredentials)
+      .then((res) => {
+        if (res) {
+          const token = res.toString();
+          setIsAuthenticated(true);
+          const decoded: DecodedToken = jwtDecode(token);
+          setRole(decoded[ROLE_CLAIM]);
+          localStorage.setItem("token", token);
+        } else {
+          throw new Error("Invalid credentials");
+        }
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    setUser(null);
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("user");
+    setRole("");
+    localStorage.removeItem("token");
   };
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
-        user,
+        role,
         login,
         logout,
       }}

@@ -5,13 +5,13 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, role, logout } = useAuth();
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    window.location.reload();
+    navigate(window.location.pathname);
   };
 
   return (
@@ -21,6 +21,13 @@ const NavBar = () => {
       </Link>
       <SearchInput />
       <Spacer />
+      {isAuthenticated && role === "Admin" ? (
+        <Link onClick={() => navigate("/admin")}>
+          <Button mr={4} variant="ghost">
+            Dashboard
+          </Button>
+        </Link>
+      ) : null}
       {isAuthenticated ? (
         <Link onClick={handleLogout}>
           <Button mr={4} variant="ghost">
