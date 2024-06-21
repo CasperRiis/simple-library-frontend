@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   Heading,
   Spinner,
@@ -46,15 +46,17 @@ const BookDetailPage = () => {
           <Text>Born in year: {author?.birthYear}</Text>
         </GridItem>
         <GridItem>
-          <Image
-            src={getCroppendImageUrl(
-              author?.imageUrl ? String(author.imageUrl) : ""
-            )}
-            alt={book.title}
-            maxHeight="400px"
-            maxWidth="600px"
-            borderRadius="10"
-          />
+          <Link to={`/author/${author?.id}`}>
+            <Image
+              src={getCroppendImageUrl(
+                author?.imageUrl ? String(author.imageUrl) : ""
+              )}
+              alt={author?.name}
+              maxHeight="400px"
+              maxWidth="600px"
+              borderRadius="10"
+            />
+          </Link>
         </GridItem>
       </Grid>
     </>
