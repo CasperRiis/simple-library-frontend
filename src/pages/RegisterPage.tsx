@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 const RegisterPage = () => {
-  const { login, register, isAuthenticated } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
