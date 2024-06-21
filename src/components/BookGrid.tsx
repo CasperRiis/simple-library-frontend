@@ -4,6 +4,7 @@ import BookCard from "./BookCard";
 import BookCardContainer from "./BookCardContainer";
 import InfiniteScroll from "react-infinite-scroll-component";
 import React from "react";
+import BookCardSkeleton from "./BookCardSkeleton";
 
 const BookGrid = () => {
   const {
@@ -18,8 +19,9 @@ const BookGrid = () => {
   const fetchedBooksCount =
     data?.pages.reduce((acc, page) => acc + page.results.length, 0) || 0;
 
-  if (isLoading) return <Spinner />;
-  if (error || !data) throw error;
+  const skeletons = [...Array(20).keys()];
+
+  if (error) throw error;
 
   return (
     <>
@@ -34,6 +36,12 @@ const BookGrid = () => {
           spacing={10}
           padding="10"
         >
+          {isLoading &&
+            skeletons.map((skeleton) => (
+              <BookCardContainer key={skeleton}>
+                <BookCardSkeleton />
+              </BookCardContainer>
+            ))}
           {data?.pages.map((page, index) => (
             <React.Fragment key={index}>
               {page.results.map((book) => (
