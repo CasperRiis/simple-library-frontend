@@ -1,4 +1,11 @@
-import { Button, HStack, Image, Link, Spacer } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Image,
+  Link,
+  Spacer,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import logo from "../assets/logo.webp";
 import SearchInput from "./SearchInput";
 import { useAuth } from "../context/AuthContext";
@@ -14,6 +21,8 @@ const NavBar = () => {
     navigate(window.location.pathname);
   };
 
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
+
   return (
     <HStack bg="blue.700" justifyContent="space-between" padding={2}>
       <Link href="/">
@@ -21,12 +30,19 @@ const NavBar = () => {
       </Link>
       <SearchInput />
       <Spacer />
-      {isAuthenticated && role === "Admin" ? (
-        <Link onClick={() => navigate("/admin")}>
-          <Button mr={4} variant="ghost">
-            Dashboard
-          </Button>
-        </Link>
+      {isAuthenticated && role === "Admin" && isLargerThan800 ? (
+        <>
+          <Link onClick={() => navigate("/author/manage")}>
+            <Button mr={4} variant="ghost">
+              Manage Author
+            </Button>
+          </Link>
+          <Link onClick={() => navigate("/book/add")}>
+            <Button mr={4} variant="ghost">
+              Add Book
+            </Button>
+          </Link>
+        </>
       ) : null}
       {isAuthenticated ? (
         <Link onClick={handleLogout}>

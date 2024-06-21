@@ -14,7 +14,7 @@ const useBooks = () => {
           page: pageParam,
         },
       }),
-    staleTime: ms("1h"),
+    staleTime: ms("5m"),
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.next ? allPages.length + 1 : undefined;
     },

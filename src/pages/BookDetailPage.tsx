@@ -6,10 +6,12 @@ import {
   Image,
   Grid,
   GridItem,
+  Button,
 } from "@chakra-ui/react";
 import useBook from "../hooks/useBook";
 import getCroppendImageUrl from "../services/image-crop";
 import useAuthor from "../hooks/useAuthor";
+import { useAuth } from "../context/AuthContext";
 
 const BookDetailPage = () => {
   const { id } = useParams();
@@ -18,6 +20,7 @@ const BookDetailPage = () => {
     book?.authorId ? String(book.authorId) : "",
     true
   );
+  const { isAuthenticated, role } = useAuth();
 
   if (isLoading) return <Spinner />;
   if (error || !book) throw error;
@@ -31,8 +34,18 @@ const BookDetailPage = () => {
       >
         <GridItem>
           <Heading>{book.title}</Heading>
+          {isAuthenticated && role === "Admin" ? (
+            <Text> Book ID: {book.id}</Text>
+          ) : null}
           <Text>Genre: {book.genre}</Text>
           <Text>Released in year: {book.year}</Text>
+          {isAuthenticated && role === "Admin" ? (
+            <Link to={`/book/${book.id}/edit`}>
+              <Button bgColor="darkorange" _hover={{ bgColor: "orange" }}>
+                Edit
+              </Button>
+            </Link>
+          ) : null}
         </GridItem>
         <GridItem>
           <Image
@@ -46,6 +59,9 @@ const BookDetailPage = () => {
 
         <GridItem>
           <Heading>{author?.name}</Heading>
+          {isAuthenticated && role === "Admin" ? (
+            <Text> Author ID: {author?.id}</Text>
+          ) : null}
           <Text>Nationality: {author?.nationality}</Text>
           <Text>Born in year: {author?.birthYear}</Text>
         </GridItem>

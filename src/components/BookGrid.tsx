@@ -19,7 +19,7 @@ const BookGrid = () => {
   const fetchedBooksCount =
     data?.pages.reduce((acc, page) => acc + page.results.length, 0) || 0;
 
-  const skeletons = [...Array(20).keys()];
+  const skeletons = [...Array(12).keys()];
 
   if (error) throw error;
 

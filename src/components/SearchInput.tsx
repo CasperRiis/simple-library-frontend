@@ -33,9 +33,11 @@ const SearchInput = () => {
           ref={ref}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          background={"blue.800"}
           borderRadius={20}
           placeholder="Search books..."
           variant="filled"
+          sx={{ "::placeholder": { color: "gray.300" } }} // Add this line
         />
       </InputGroup>
     </form>
