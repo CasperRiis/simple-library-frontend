@@ -19,7 +19,7 @@ const AuthorDetailPage = () => {
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" gap={5}>
+      <Grid templateColumns="repeat(2, 1fr)" gap={5} padding="2vh">
         <GridItem>
           <Heading>{author?.name}</Heading>
           <Text>Nationality: {author?.nationality}</Text>

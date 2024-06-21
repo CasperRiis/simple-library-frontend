@@ -24,7 +24,7 @@ const BookDetailPage = () => {
 
   return (
     <>
-      <Grid templateColumns="repeat(2, 1fr)" gap={5}>
+      <Grid templateColumns="repeat(2, 1fr)" gap={5} padding="2vh">
         <GridItem>
           <Heading>{book.title}</Heading>
           <Text>Genre: {book.genre}</Text>
