@@ -5,6 +5,18 @@
     <link rel="icon" type="image/webp" href="/src/assets/logo.webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Library Management System</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var environment = "production";
+        if (window.location.hostname.includes("localhost")) {
+          environment = "development";
+        }
+
+        if (environment === "development") {
+          document.title = "Lib-Mgmt-Sys - Development";
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
