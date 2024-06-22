@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Checkbox, CheckboxGroup, Stack } from "@chakra-ui/react";
+import { Box, Checkbox, CheckboxGroup, Wrap } from "@chakra-ui/react";
 
 interface Props {
   genres: string[];
@@ -26,13 +26,13 @@ const GenreFilter: React.FC<Props> = ({ genres, onChange }) => {
         value={[selectedGenre]}
         onChange={(values) => handleGenreChange(values as string[])}
       >
-        <Stack direction="row" spacing={4} justify="space-between">
+        <Wrap spacing="4" justify="flex-start">
           {genres.map((genre) => (
             <Checkbox key={genre} value={genre}>
               {genre}
             </Checkbox>
           ))}
-        </Stack>
+        </Wrap>
       </CheckboxGroup>
     </Box>
   );
