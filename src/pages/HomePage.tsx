@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import BookGrid from "../components/BookGrid";
 import GenreFilter from "../components/GenreFilter";
 
