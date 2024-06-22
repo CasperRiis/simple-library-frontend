@@ -6,7 +6,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import React from "react";
 import BookCardSkeleton from "./BookCardSkeleton";
 
-const BookGrid = () => {
+interface BookGridProps {
+  genre: string;
+}
+
+const BookGrid = ({ genre }: BookGridProps) => {
   const {
     data,
     isLoading,
@@ -14,7 +18,7 @@ const BookGrid = () => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-  } = useBooks();
+  } = useBooks(genre);
 
   const fetchedBooksCount =
     data?.pages.reduce((acc, page) => acc + page.results.length, 0) || 0;

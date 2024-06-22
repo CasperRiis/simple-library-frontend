@@ -5,13 +5,14 @@ import ms from "ms";
 
 const apiClient = new ApiClient<Book>("book");
 
-const useBooks = () => {
+const useBooks = (genre?: string) => {
   return useInfiniteQuery<FetchResponse<Book>, Error>({
-    queryKey: ["books"],
+    queryKey: ["books", genre].filter(Boolean),
     queryFn: ({ pageParam = 1 }) =>
       apiClient.getAll({
         params: {
           page: pageParam,
+          ...(genre ? { searchGenre: genre } : {}),
         },
       }),
     staleTime: ms("5m"),
