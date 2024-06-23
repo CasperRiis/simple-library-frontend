@@ -1,9 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test("should have the correct title", async ({ page }) => {
+test("match title", async ({ page }) => {
   const baseURL = process.env.BASE_URL || "http://localhost:5173";
-  console.log(`Navigating to ${baseURL}`);
   await page.goto(baseURL);
 
-  await expect(page).toHaveTitle(/Library Management System/);
+  const expectedTitle =
+    baseURL === "http://localhost:5173"
+      ? "Lib-Mgmt-Sys - Development"
+      : /Library Management System/;
+  await expect(page).toHaveTitle(expectedTitle);
 });
