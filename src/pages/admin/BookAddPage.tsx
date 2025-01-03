@@ -61,10 +61,13 @@ const BookAddPage = () => {
           isClosable: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Error response:", error.response?.data);
         toast({
           title: "Post failed",
-          description: "Unexpected error. Please try again.",
+          description: `Unexpected error: ${
+            JSON.stringify(error.response?.data) || error.message
+          }. Please try again.`,
           status: "error",
           duration: 9000,
           isClosable: true,
