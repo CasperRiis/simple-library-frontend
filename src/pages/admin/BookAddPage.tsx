@@ -1,13 +1,12 @@
 import {
-  Heading,
   Box,
-  SimpleGrid,
-  FormControl,
   Button,
+  FormControl,
   FormLabel,
+  Heading,
   Input,
-  useToast,
   Switch,
+  useToast,
 } from "@chakra-ui/react";
 import ApiClient from "../../services/api-client";
 import { Book } from "../../entities/Book";
@@ -24,22 +23,33 @@ const BookAddPage = () => {
   const handleSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
     event.preventDefault();
     const target = event.target as HTMLFormElement;
-    const book: Book = {
-      id: 0,
-      title: (target.elements.namedItem("title") as HTMLInputElement)?.value,
-      authorId: Number(
-        (target.elements.namedItem("authorId") as HTMLInputElement)?.value
-      ),
-      isHidden: isHidden,
-      genre: (target.elements.namedItem("genre") as HTMLInputElement)?.value,
-      year: Number(
-        (target.elements.namedItem("year") as HTMLInputElement)?.value
-      ),
-      imageUrl: (target.elements.namedItem("imageUrl") as HTMLInputElement)
-        ?.value,
-    };
+    const formData = new FormData();
+    formData.append("id", "0");
+    formData.append(
+      "title",
+      (target.elements.namedItem("title") as HTMLInputElement)?.value
+    );
+    formData.append(
+      "authorId",
+      (target.elements.namedItem("authorId") as HTMLInputElement)?.value
+    );
+    formData.append("isHidden", isHidden.toString());
+    formData.append(
+      "genre",
+      (target.elements.namedItem("genre") as HTMLInputElement)?.value
+    );
+    formData.append(
+      "year",
+      (target.elements.namedItem("year") as HTMLInputElement)?.value
+    );
+    const imageFile = (target.elements.namedItem("image") as HTMLInputElement)
+      ?.files?.[0];
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
     apiClient
-      .post(book)
+      .postFormdata(formData)
       .then(() => {
         refetch();
         event.target.reset();
@@ -65,43 +75,40 @@ const BookAddPage = () => {
   return (
     <Box marginBottom={8} padding={6}>
       <Heading size="lg" mb={4}>
-        Add Book
+        Add a New Book
       </Heading>
-      <Box as="form" onSubmit={handleSubmit}>
-        <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={4}>
-          <FormControl>
-            <FormLabel>Title</FormLabel>
-            <Input type="text" name="title" required />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Author ID</FormLabel>
-            <Input type="number" name="authorId" required />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Genre</FormLabel>
-            <Input type="text" name="genre" required />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Release Year</FormLabel>
-            <Input type="number" name="year" required />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Image URL</FormLabel>
-            <Input type="text" name="imageUrl" />
-          </FormControl>
-          <FormControl display="flex" alignItems="center">
-            <FormLabel mb="0">Is Hidden</FormLabel>
-            <Switch
-              name="isHidden"
-              isChecked={isHidden}
-              onChange={(e) => setIsHidden(e.target.checked)}
-            />
-          </FormControl>
-        </SimpleGrid>
-        <Button type="submit" mt={4}>
-          Submit
+      <form onSubmit={handleSubmit}>
+        <FormControl mb={4}>
+          <FormLabel>Title</FormLabel>
+          <Input type="text" name="title" required />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Author ID</FormLabel>
+          <Input type="number" name="authorId" required />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Genre</FormLabel>
+          <Input type="text" name="genre" required />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Year</FormLabel>
+          <Input type="number" name="year" required />
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel>Image</FormLabel>
+          <Input type="file" name="image" accept="image/*" />
+        </FormControl>
+        <FormControl display="flex" alignItems="center" mb={4}>
+          <FormLabel mb="0">Hidden</FormLabel>
+          <Switch
+            isChecked={isHidden}
+            onChange={() => setIsHidden(!isHidden)}
+          />
+        </FormControl>
+        <Button type="submit" colorScheme="teal">
+          Add Book
         </Button>
-      </Box>
+      </form>
     </Box>
   );
 };

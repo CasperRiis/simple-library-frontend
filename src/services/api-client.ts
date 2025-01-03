@@ -33,6 +33,14 @@ class ApiClient<T> {
   post = (data: T) =>
     axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
 
+  postFormdata = (data: T | FormData) => {
+    const headers =
+      data instanceof FormData ? { "Content-Type": "multipart/form-data" } : {};
+    return axiosInstance
+      .post<T>(this.endpoint, data, { headers })
+      .then((res) => res.data);
+  };
+
   put = (data: T) =>
     axiosInstance.put<T>(this.endpoint, data).then((res) => res.data);
 
