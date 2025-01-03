@@ -8,7 +8,7 @@ const SearchInput = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { data: book, refetch } = useBook(`title/${searchQuery}`, false);
+  const { data: book, refetch } = useBook(`search/${searchQuery}`, false);
 
   useEffect(() => {
     if (searchQuery && searchQuery.trim() !== "") {
