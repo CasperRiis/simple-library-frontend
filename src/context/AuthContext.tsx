@@ -14,7 +14,7 @@ const ROLE_CLAIM: string =
   "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
 interface UserCredentials {
-  username: string;
+  email: string;
   password: string;
 }
 
