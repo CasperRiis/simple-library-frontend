@@ -26,7 +26,7 @@ const RegisterPage = () => {
   const handleSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
     event.preventDefault();
     const userCredentials = {
-      username: event.target.username.value,
+      email: event.target.email.value,
       password: event.target.password.value,
     };
     register(userCredentials)
@@ -52,8 +52,8 @@ const RegisterPage = () => {
         </Heading>
         <Box as="form" onSubmit={handleSubmit}>
           <FormControl>
-            <FormLabel>Username</FormLabel>
-            <Input type="text" name="username" required />
+            <FormLabel>Email</FormLabel>
+            <Input type="text" name="email" required />
           </FormControl>
           <FormControl paddingTop="4">
             <FormLabel>Password</FormLabel>
