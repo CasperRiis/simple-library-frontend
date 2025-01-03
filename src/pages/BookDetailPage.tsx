@@ -46,6 +46,9 @@ const BookDetailPage = () => {
               </Button>
             </Link>
           ) : null}
+          {isAuthenticated && role === "Admin" ? (
+            <Text>Is Hidden: {book.isHidden.toString()}</Text>
+          ) : null}
         </GridItem>
         <GridItem>
           <Image
