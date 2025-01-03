@@ -9,10 +9,12 @@ import {
   Input,
   useToast,
   Divider,
+  Switch,
 } from "@chakra-ui/react";
 import ApiClient from "../../services/api-client";
 import { Book } from "../../entities/Book";
 import useBook from "../../hooks/useBook";
+import { useEffect, useState } from "react";
 
 const apiClient = new ApiClient<Book>("book/");
 
@@ -21,6 +23,13 @@ const BookEditPage = () => {
   const { data: book, refetch } = useBook(id!, true);
   const toast = useToast();
   const navigate = useNavigate();
+  const [isHidden, setIsHidden] = useState(false);
+
+  useEffect(() => {
+    if (book) {
+      setIsHidden(book.isHidden);
+    }
+  }, [book]);
 
   const handleSubmit = (event: React.FocusEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,6 +40,7 @@ const BookEditPage = () => {
       authorId: Number(
         (target.elements.namedItem("authorId") as HTMLInputElement)?.value
       ),
+      isHidden: isHidden,
       genre: (target.elements.namedItem("genre") as HTMLInputElement)?.value,
       year: Number(
         (target.elements.namedItem("year") as HTMLInputElement)?.value
@@ -129,6 +139,14 @@ const BookEditPage = () => {
           <FormControl>
             <FormLabel>Image URL</FormLabel>
             <Input type="text" name="imageUrl" defaultValue={book?.imageUrl} />
+          </FormControl>
+          <FormControl display="flex" alignItems="center">
+            <FormLabel mb="0">Is Hidden</FormLabel>
+            <Switch
+              name="isHidden"
+              isChecked={isHidden}
+              onChange={(e) => setIsHidden(e.target.checked)}
+            />
           </FormControl>
         </SimpleGrid>
         <Button type="submit" mt={4}>
