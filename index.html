@@ -12,8 +12,14 @@
           environment = "development";
         }
 
+        var cspContent = "";
         if (environment === "development") {
           document.title = "Lib-Mgmt-Sys - Development";
+          cspContent =
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://localhost:10000; connect-src 'self' http://localhost:5082; font-src 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests;";
+        } else {
+          cspContent =
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://simplelibrarystorageacc.blob.core.windows.net; connect-src 'self' https://simple-library-backend.azurewebsites.net; font-src 'self'; object-src 'none'; frame-src 'none'; upgrade-insecure-requests;";
         }
       });
     </script>
